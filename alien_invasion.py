@@ -84,7 +84,7 @@ class AlienInvasion:
             self.bullets.empty()
             self.aliens.empty()
 
-           #Create a new fleet and center the ship
+            #Create a new fleet and center the ship
             self._create_fleet()
             self.ship.center_ship()
 
@@ -92,7 +92,8 @@ class AlienInvasion:
             sleep (0.5)
 
         else:
-             self.game_active = False
+            self.game_active = False
+            pygame.mouse.set_visible(True)
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -145,6 +146,9 @@ class AlienInvasion:
             # Create a new fleet and center the ship.
             self._create_fleet()
             self.ship.center_ship()
+
+            # Hide the mouse cursor.
+            pygame.mouse.set_visible(False)
 
     def _fire_bullet(self):
         """Create a new bullet and add it to teh bullets group"""
