@@ -1,3 +1,17 @@
+"""
+Program: alien.py
+
+Purpose:  Defina the Alien class and its behavior within the game, 
+          including movement, positioning, and rendering on the screen.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/10/26
+"""
+
 import pygame
 from pygame.sprite import Sprite
 

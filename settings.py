@@ -1,3 +1,16 @@
+"""
+Program: settings.py
+
+Purpose:  Define and manage all game settings and configuration values.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/10/26
+"""
+
 class Settings:
     """A class to store all settings for Alien Invasion"""
 

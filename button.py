@@ -1,3 +1,16 @@
+"""
+Program: button.py
+
+Purpose:  Define the Button class used to crate and display 
+          interactive buttons within the game.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/10/26
+"""
 import pygame.font
 
 class Button:

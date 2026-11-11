@@ -1,3 +1,18 @@
+"""
+Program: alien_invation.py
+
+Purpose:  A modified version of the Alien Invation game.  Added 
+          mulitple weapon types, including standard, double, and 
+          spread shots.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/10/26
+"""
+
 import sys
 from time import sleep
 import pygame
@@ -59,7 +74,9 @@ class AlienInvasion:
             current_x = alien_width
             current_y += 2 * alien_height    
 
-    def _create_alien(self, x_position, y_position):        
+    def _create_alien(self, x_position, y_position):   
+            """Create an alien at the specified x and y coordinates and 
+                add it to the fleet."""     
             new_alien = Alien(self)
             new_alien.x = x_position
             new_alien.rect.x = x_position
@@ -168,6 +185,7 @@ class AlienInvasion:
             pygame.mouse.set_visible(False)
 
     def _fire_weapon(self):
+        """Fire the weapon that is currently selected in the player's arsenal"""
         if self.arsenal.current_weapon == "standard":
             self._fire_standard()
 
@@ -199,10 +217,13 @@ class AlienInvasion:
                 break
 
     def _fire_standard(self):
+        """Fire a single bullet straight ahead"""
         bullet = Bullet(self)
         self.bullets.add(bullet)
 
     def _fire_double(self):
+        """Fire two bullets at the same time from slightly differnt positions.
+           Both bullets go striaght up."""
         left_bullet = Bullet(self)
         right_bullet = Bullet(self)
 
@@ -213,6 +234,7 @@ class AlienInvasion:
         self.bullets.add(right_bullet)
 
     def _fire_spread(self):
+        """Fire three bulled in a spread pattern"""
         left = Bullet(self, dx=-2)
         center = Bullet(self)
         right = Bullet(self, dx=2)

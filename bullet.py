@@ -1,3 +1,17 @@
+"""
+Program: bullet.py
+
+Purpose:  Defin the Bullet class and mange projectice creation, 
+          movement, and behavior for the game's standard, double
+          and spread-shot weapon systems.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/10/26
+"""
 import pygame
 from pygame.sprite import Sprite
 

@@ -1,3 +1,17 @@
+"""
+Program: scoreboard.py
+
+Purpose:  Manage and display game statistics and status
+          information to the player during gameplay.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/10/26
+"""
+
 import pygame.font
 from pygame.sprite import Group
 
