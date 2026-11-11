@@ -127,12 +127,12 @@ class AlienInvasion:
                 elif event.key == pygame.K_q:
                     sys.exit()
                 elif event.key == pygame.K_SPACE:
-                    self._fire_bullet()
+                    self._fire_weapon()
                 elif event.key == pygame.K_1:
                     self.arsenal.current_weapon = "standard"
                 elif event.key == pygame.K_2:
                     self.arsenal.current_weapon = "double"
-                elif event.key == pygame.K3:
+                elif event.key == pygame.K_3:
                     self.arsenal.current_weapon = "spread"
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
@@ -167,11 +167,16 @@ class AlienInvasion:
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
 
-    def _fire_bullet(self):
-        """Create a new bullet and add it to teh bullets group"""
-        if len(self.bullets) < self.settings.bullets_allowed:
-            new_bullet = Bullet(self)
-            self.bullets.add(new_bullet)
+    def _fire_weapon(self):
+        if self.arsenal.current_weapon == "standard":
+            self._fire_standard()
+
+        elif self.arsenal.current_weapon == "double":
+            self._fire_double()
+
+        elif self.arsenal.current_weapon == "spread":
+            self._fire_spread()
+
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -193,8 +198,31 @@ class AlienInvasion:
                 self._ship_hit()
                 break
 
+    def _fire_standard(self):
+        bullet = Bullet(self)
+        self.bullets.add(bullet)
+
+    def _fire_double(self):
+        left_bullet = Bullet(self)
+        right_bullet = Bullet(self)
+
+        left_bullet.rect.x -=10
+        right_bullet.rect.x +=10
+
+        self.bullets.add(left_bullet)
+        self.bullets.add(right_bullet)
+
+    def _fire_spread(self):
+        left = Bullet(self, dx=-2)
+        center = Bullet(self)
+        right = Bullet(self, dx=2)
+
+        self.bullets.add(left)
+        self.bullets.add(center)
+        self.bullets.add(right)
+
     def _check_bullet_alien_collisions(self):
-        """REspond to bullet-alien collisions"""  
+        """Respond to bullet-alien collisions"""  
         # Remove any bullets and aliens that have collided.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
