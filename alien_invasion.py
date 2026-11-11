@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
+from arsenal import Arsenal
 from button import Button
 from ship import Ship
 from bullet import Bullet
@@ -18,10 +19,11 @@ class AlienInvasion:
         pygame.init()
         self.clock = pygame.time.Clock()
         self.settings = Settings()
+        self.arsenal = Arsenal()
 
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
-        pygame.display.set_caption("Alien Invasion")
+        pygame.display.set_caption("Alien Invasion - Track 1")
 
         # Create an instance to store game statistics,
         # and create a scoreboard
@@ -126,6 +128,12 @@ class AlienInvasion:
                     sys.exit()
                 elif event.key == pygame.K_SPACE:
                     self._fire_bullet()
+                elif event.key == pygame.K_1:
+                    self.arsenal.current_weapon = "standard"
+                elif event.key == pygame.K_2:
+                    self.arsenal.current_weapon = "double"
+                elif event.key == pygame.K3:
+                    self.arsenal.current_weapon = "spread"
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = False
