@@ -17,4 +17,4 @@ class Arsenal:
 
     def __init__(self):
         """Initialize the arsenal"""
-        self.current_weapon = "Standard"
+        self.current_weapon = "Basic"

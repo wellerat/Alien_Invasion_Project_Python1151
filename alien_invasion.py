@@ -35,6 +35,7 @@ class AlienInvasion:
         self.clock = pygame.time.Clock()
         self.settings = Settings()
         self.arsenal = Arsenal()
+        self.weapon_font = pygame.font.SysFont(None, 36)
 
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
@@ -146,11 +147,11 @@ class AlienInvasion:
                 elif event.key == pygame.K_SPACE:
                     self._fire_weapon()
                 elif event.key == pygame.K_1:
-                    self.arsenal.current_weapon = "standard"
+                    self.arsenal.current_weapon = "Basic"
                 elif event.key == pygame.K_2:
-                    self.arsenal.current_weapon = "double"
+                    self.arsenal.current_weapon = "Power"
                 elif event.key == pygame.K_3:
-                    self.arsenal.current_weapon = "spread"
+                    self.arsenal.current_weapon = "Ultimate"
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = False
@@ -186,13 +187,13 @@ class AlienInvasion:
 
     def _fire_weapon(self):
         """Fire the weapon that is currently selected in the player's arsenal"""
-        if self.arsenal.current_weapon == "standard":
+        if self.arsenal.current_weapon == "Basic":
             self._fire_standard()
 
-        elif self.arsenal.current_weapon == "double":
+        elif self.arsenal.current_weapon == "Power":
             self._fire_double()
 
-        elif self.arsenal.current_weapon == "spread":
+        elif self.arsenal.current_weapon == "Ultimate":
             self._fire_spread()
 
 
@@ -234,7 +235,7 @@ class AlienInvasion:
         self.bullets.add(right_bullet)
 
     def _fire_spread(self):
-        """Fire three bulled in a spread pattern"""
+        """Fire three bullets in a spread pattern"""
         left = Bullet(self, dx=-2)
         center = Bullet(self)
         right = Bullet(self, dx=2)
@@ -291,7 +292,15 @@ class AlienInvasion:
 
         # Draw the play button if the game is inactive.
         if not self.game_active:
-            self.play_button.draw_button()  
+            self.play_button.draw_button() 
+
+        weapon_text = self.weapon_font.render(
+            f"Weapon:  {self.arsenal.current_weapon}",
+            True,
+            (60,60,60)
+        )     
+
+        self.screen.blit(weapon_text, (20,20))
 
         pygame.display.flip()   
 
