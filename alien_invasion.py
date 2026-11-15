@@ -10,7 +10,7 @@ Author: Ann Cooper
 Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
 
 Date Created: 10/22/26
-Date Updated: 11/10/26
+Date Updated: 11/14/26
 """
 
 import sys
@@ -51,8 +51,8 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
 
         self._create_fleet()
-        # Start Alien Invation in an inactive state.
-        self.game_active = False
+        # Start Alien Invasion in an inactive state.
+        self.game_active = True
 
         # Make the Play Button
         self.play_button = Button(self, "Play")
@@ -101,8 +101,8 @@ class AlienInvasion:
         """Respond to the ship being hit by an alien"""
         if self.stats.ships_left > 0:
            # Decrement  ships_left, and update the scoreboard.
-            self.stats.ships_left -= 1
-            self.sb.prep_ships()
+            #self.stats.ships_left -= 1
+            #self.sb.prep_ships()
 
             # Get rid of any remaining bullets and aliens
             self.bullets.empty()
@@ -169,8 +169,8 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             # Reset the game statistics.
             self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
+            #self.sb.prep_score()
+            #self.sb.prep_level()
             self.sb.prep_ships()
             self.game_active = True
 
@@ -254,7 +254,7 @@ class AlienInvasion:
             for alien in collisions.values():
                 self.stats.score += self.settings.alien_points * len(alien)
             self.sb.prep_score()
-            self.sb.check_high_score()
+            # self.sb.check_high_score()
 
         if not self.aliens:
             #Destroy exiting bullets and create new fleet.
@@ -263,8 +263,8 @@ class AlienInvasion:
             self.settings.increase_speed()
 
             #Increase level
-            self.stats.level +=1
-            self.sb.prep_level()
+            #self.stats.level +=1
+            #self.sb.prep_level()
         
 
     def _update_aliens(self):
@@ -288,11 +288,11 @@ class AlienInvasion:
         self.aliens.draw(self.screen)  
 
         # Draw the scoreboard information.
-        self.sb.show_score()
+        # self.sb.show_score()
 
         # Draw the play button if the game is inactive.
-        if not self.game_active:
-            self.play_button.draw_button() 
+        # if not self.game_active:
+            # self.play_button.draw_button() 
 
         weapon_text = self.weapon_font.render(
             f"Weapon:  {self.arsenal.current_weapon}",
