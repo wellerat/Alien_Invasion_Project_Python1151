@@ -13,6 +13,7 @@ Date Created: 10/22/26
 Date Updated: 11/10/26
 """
 
+from pathlib import Path
 import pygame
 from pygame.sprite import Sprite
 
@@ -28,7 +29,7 @@ class Ship(Sprite):
 
         #Load the ship image and gets its rect
 
-        self.image = pygame.image.load('images/ship.bmp')
+        self.image = pygame.image.load(Path("images")/"ship.bmp")
         self.rect = self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen
