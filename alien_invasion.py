@@ -1,9 +1,25 @@
+"""
+Program: alien_invation.py
+
+Purpose:  A modified version of the Alien Invation game.  Added 
+          mulitple weapon types, including standard, double, and 
+          spread shots.
+          
+Author: Ann Cooper
+
+Starter Code: Python Crash Course, 3rd Edition by Eric Matthes
+
+Date Created: 10/22/26
+Date Updated: 11/14/26
+"""
+
 import sys
 from time import sleep
 import pygame
 from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
+from arsenal import Arsenal
 from button import Button
 from ship import Ship
 from bullet import Bullet
@@ -18,10 +34,12 @@ class AlienInvasion:
         pygame.init()
         self.clock = pygame.time.Clock()
         self.settings = Settings()
+        self.arsenal = Arsenal()
+        self.weapon_font = pygame.font.SysFont(None, 36)
 
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
-        pygame.display.set_caption("Alien Invasion")
+        pygame.display.set_caption("Alien Invasion - Track 1")
 
         # Create an instance to store game statistics,
         # and create a scoreboard
@@ -33,8 +51,8 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
 
         self._create_fleet()
-        # Start Alien Invation in an inactive state.
-        self.game_active = False
+        # Start Alien Invasion in an inactive state.
+        self.game_active = True
 
         # Make the Play Button
         self.play_button = Button(self, "Play")
@@ -57,7 +75,9 @@ class AlienInvasion:
             current_x = alien_width
             current_y += 2 * alien_height    
 
-    def _create_alien(self, x_position, y_position):        
+    def _create_alien(self, x_position, y_position):   
+            """Create an alien at the specified x and y coordinates and 
+                add it to the fleet."""     
             new_alien = Alien(self)
             new_alien.x = x_position
             new_alien.rect.x = x_position
@@ -81,8 +101,8 @@ class AlienInvasion:
         """Respond to the ship being hit by an alien"""
         if self.stats.ships_left > 0:
            # Decrement  ships_left, and update the scoreboard.
-            self.stats.ships_left -= 1
-            self.sb.prep_ships()
+            #self.stats.ships_left -= 1
+            #self.sb.prep_ships()
 
             # Get rid of any remaining bullets and aliens
             self.bullets.empty()
@@ -125,7 +145,13 @@ class AlienInvasion:
                 elif event.key == pygame.K_q:
                     sys.exit()
                 elif event.key == pygame.K_SPACE:
-                    self._fire_bullet()
+                    self._fire_weapon()
+                elif event.key == pygame.K_1:
+                    self.arsenal.current_weapon = "Basic"
+                elif event.key == pygame.K_2:
+                    self.arsenal.current_weapon = "Power"
+                elif event.key == pygame.K_3:
+                    self.arsenal.current_weapon = "Ultimate"
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = False
@@ -143,8 +169,8 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             # Reset the game statistics.
             self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
+            #self.sb.prep_score()
+            #self.sb.prep_level()
             self.sb.prep_ships()
             self.game_active = True
 
@@ -159,11 +185,17 @@ class AlienInvasion:
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
 
-    def _fire_bullet(self):
-        """Create a new bullet and add it to teh bullets group"""
-        if len(self.bullets) < self.settings.bullets_allowed:
-            new_bullet = Bullet(self)
-            self.bullets.add(new_bullet)
+    def _fire_weapon(self):
+        """Fire the weapon that is currently selected in the player's arsenal"""
+        if self.arsenal.current_weapon == "Basic":
+            self._fire_standard()
+
+        elif self.arsenal.current_weapon == "Power":
+            self._fire_double()
+
+        elif self.arsenal.current_weapon == "Ultimate":
+            self._fire_spread()
+
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -185,8 +217,35 @@ class AlienInvasion:
                 self._ship_hit()
                 break
 
+    def _fire_standard(self):
+        """Fire a single bullet straight ahead"""
+        bullet = Bullet(self)
+        self.bullets.add(bullet)
+
+    def _fire_double(self):
+        """Fire two bullets at the same time from slightly differnt positions.
+           Both bullets go striaght up."""
+        left_bullet = Bullet(self)
+        right_bullet = Bullet(self)
+
+        left_bullet.rect.x -=10
+        right_bullet.rect.x +=10
+
+        self.bullets.add(left_bullet)
+        self.bullets.add(right_bullet)
+
+    def _fire_spread(self):
+        """Fire three bullets in a spread pattern"""
+        left = Bullet(self, dx=-2)
+        center = Bullet(self)
+        right = Bullet(self, dx=2)
+
+        self.bullets.add(left)
+        self.bullets.add(center)
+        self.bullets.add(right)
+
     def _check_bullet_alien_collisions(self):
-        """REspond to bullet-alien collisions"""  
+        """Respond to bullet-alien collisions"""  
         # Remove any bullets and aliens that have collided.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
@@ -195,7 +254,7 @@ class AlienInvasion:
             for alien in collisions.values():
                 self.stats.score += self.settings.alien_points * len(alien)
             self.sb.prep_score()
-            self.sb.check_high_score()
+            # self.sb.check_high_score()
 
         if not self.aliens:
             #Destroy exiting bullets and create new fleet.
@@ -204,8 +263,8 @@ class AlienInvasion:
             self.settings.increase_speed()
 
             #Increase level
-            self.stats.level +=1
-            self.sb.prep_level()
+            #self.stats.level +=1
+            #self.sb.prep_level()
         
 
     def _update_aliens(self):
@@ -229,11 +288,19 @@ class AlienInvasion:
         self.aliens.draw(self.screen)  
 
         # Draw the scoreboard information.
-        self.sb.show_score()
+        # self.sb.show_score()
 
         # Draw the play button if the game is inactive.
-        if not self.game_active:
-            self.play_button.draw_button()  
+        # if not self.game_active:
+            # self.play_button.draw_button() 
+
+        weapon_text = self.weapon_font.render(
+            f"Weapon:  {self.arsenal.current_weapon}",
+            True,
+            (60,60,60)
+        )     
+
+        self.screen.blit(weapon_text, (20,20))
 
         pygame.display.flip()   
 
